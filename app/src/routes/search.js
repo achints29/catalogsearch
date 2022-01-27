@@ -63,7 +63,7 @@ let getSearchResults = async (queryString) => {
           "Content-Type": "application/json",
           "Access-Control-Request-Headers": "*",
           "api-key":
-            "U7TVtdFfo9vwKfEZCWoCJ9VZq675Kr7swo8ezRL5RghC6AqQK1V71iEjnbxneyvQ",
+            "U7TVtdFfo9vwKfEZCWoCJ9VZq675Kr7swo8ezRL5RghC6AqQK1V71iEjnbxneyvQW",
         },
         data: data,
       };
