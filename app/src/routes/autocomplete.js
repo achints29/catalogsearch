@@ -2,7 +2,7 @@ const express = require("express");
 var axios = require("axios");
 
 // function to get the data from the API
-let getSearchResults = async (queryString, filterArray, page, limit) => {
+let getTypeaheadResults = async (queryString, filterArray, page, limit) => {
   console.log(queryString);
   console.log(filterArray);
   console.log(page);
@@ -10,55 +10,31 @@ let getSearchResults = async (queryString, filterArray, page, limit) => {
 
   var searchTerm = {
     $search: {
-      facet: {
-        operator: {
-          phrase: {
-            path: {
-              wildcard: "*",
-            },
-            query: queryString,
-          },
-        },
-        facets: {
-          colorsFacet: {
-            type: "string",
-            path: "skuColors",
-          },
-          sizesFacet: {
-            type: "string",
-            path: "skuSizes",
-          },
-          featuresFacet: {
-            type: "string",
-            path: "features",
-          },
-          brandsFacet: {
-            type: "string",
-            path: "brand",
-          },
-          categoriesFacet: {
-            type: "string",
-            path: "ancestorCategories",
-          },
-        },
+      autocomplete: {
+        query: queryString,
+        path: "displayName",
       },
     },
   };
-  var facetsMetaData = {
-    $set: {
-      facets: "$$SEARCH_META",
-    },
-  };
+
+  var projectStage = {
+    "$project": {
+        "_id": 0,
+        "displayName": 1,
+        "id": 1,
+        "image": "$thumbnailImage.url"
+    }
+};
   //limit stage is not allowed in atlas M0 cluster
   var limitStage = {
     limit: limit,
   };
-  
+
   var fullQuery = {
     collection: "ecomProductCatalog",
     database: "eComSearch",
     dataSource: "eComSearch",
-    pipeline: [searchTerm, facetsMetaData],
+    pipeline: [searchTerm, projectStage],
   };
 
   var data = JSON.stringify(fullQuery);
@@ -86,7 +62,7 @@ module.exports = async (req, res) => {
   let page = req.query.page;
   let limit = req.query.limit;
   //let limit = req.query.limit;
-  let responseResults = await getSearchResults(
+  let responseResults = await getTypeaheadResults(
     queryString,
     filterArray,
     page,
