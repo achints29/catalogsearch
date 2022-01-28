@@ -19,7 +19,6 @@ let getSearchResults = async (queryString, filterArray, page, limit) => {
             query: queryString,
           },
         },
-<<<<<<< HEAD
         facets: {
           colorsFacet: {
             type: "string",
@@ -41,60 +40,6 @@ let getSearchResults = async (queryString, filterArray, page, limit) => {
             type: "string",
             path: "ancestorCategories",
           },
-=======
-        pipeline: [
-            {
-              '$search': {
-                'facet': {
-                  'operator': {
-                    'phrase': {
-                      'path': {
-                        'wildcard': '*'
-                      }, 
-                      'query': queryString
-                    }
-                  }, 
-                  'facets': {
-                    'colorsFacet': {
-                      'type': 'string', 
-                      'path': 'skuColors'
-                    }, 
-                    'sizesFacet': {
-                      'type': 'string', 
-                      'path': 'skuSizes'
-                    }, 
-                    'featuresFacet': {
-                      'type': 'string', 
-                      'path': 'features'
-                    }, 
-                    'brandsFacet': {
-                      'type': 'string', 
-                      'path': 'brand'
-                    }, 
-                    'categoriesFacet': {
-                      'type': 'string', 
-                      'path': 'ancestorCategories'
-                    }
-                  }
-                }
-              }
-            },  {
-              '$set': {
-                'facets': '$$SEARCH_META'
-              }
-            }
-          ],
-      });
-      
-      var config = {
-        method: "post",
-        url: "https://data.mongodb-api.com/app/data-tfkyx/endpoint/data/beta/action/aggregate",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Request-Headers": "*",
-          "api-key":
-            "U7TVtdFfo9vwKfEZCWoCJ9VZq675Kr7swo8ezRL5RghC6AqQK1V71iEjnbxneyvQW",
->>>>>>> f0f5d885d618d8832d49feb821a71c59e76d1f49
         },
       },
     },
